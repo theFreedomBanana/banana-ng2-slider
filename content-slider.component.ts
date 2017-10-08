@@ -18,103 +18,94 @@ import { Component, Input,
 export class ContentSliderComponent {
 
   @Input('intervalTime') intervalTime: number = 2000;
-  @Input('autoPlay') set _autoPlay(b: boolean) {
-    this.autoPlay = b;
+  @Input('autoPlay') set _setAutoPlay(b: boolean) {
+    this._autoPlay = b;
     if(b) {
-      this.auto(this.intervalTime);
+      this._auto(this.intervalTime);
     }
   }
-  @Input('slideTo') set _slideTo(n: number) {
-    if ( (typeof(n) === "number") && (n != this.currentElm) ) {
-      this.forward(n);
+  @Input('slideTo') set _slideTo(index: number) {
+    if ( (typeof(index) === "number") && (index != this._currentElm) ) {
+       this._forward(index);
+
+      if(this._autoPlay) {
+        clearInterval(this._interval);
+        this._auto(this.intervalTime);        
+      }
     }
   }
 
   @ContentChild('slideShow') set _slideShow(s: ElementRef) {
-    this.children = s.nativeElement.children;
-    this.numberOfElm = this.children.length;
-    if(this.children.length) {
-      this.children[0]['classList'].add("active");
+    this._children = s.nativeElement.children;
+    this._numberOfElm = this._children.length;
+    if(this._children.length) {
+      this._children[0]['classList'].add("active");
     }
   }
 
   @ContentChildren('navRadios') private _navRadios: QueryList<any>;
 
-  children: Array<ElementRef>;
-  numberOfElm: number = 0;
-  currentElm: number = 0;
-  autoPlay = false;
-  interval: any;
+  private _children: Array<ElementRef>;
+  private _numberOfElm: number = 0;
+  private _currentElm: number = 0;
+  private _autoPlay = false;
+  private _interval: any;
   // previousElm: number = 0;
   
   constructor() {}
   
 
   // backward() {
-  //   if(this.autoPlay)
-  //     clearInterval(this.interval);
-  //   this.currentElm = this.currentElm - 1;
-  //   if(this.currentElm < 0)
-  //     this.currentElm = this.numberOfElm - 1;
+  //   if(this._autoPlay)
+  //     clearInterval(this._interval);
+  //   this._currentElm = this._currentElm - 1;
+  //   if(this._currentElm < 0)
+  //     this._currentElm = this._numberOfElm - 1;
 
-  //   this.removeClasses();
-  //   this.previousElm = this.currentElm == this.numberOfElm - 1 ? 0 : this.currentElm + 1;
-  //   this.children[this.previousElm]['classList'].add("animateForward");
-  //   this.show(this.children[this.previousElm]);
-  //   this.show(this.children[this.currentElm]);
+  //   this._removeClasses();
+  //   this.previousElm = this._currentElm == this._numberOfElm - 1 ? 0 : this._currentElm + 1;
+  //   this._children[this.previousElm]['classList'].add("animateForward");
+  //   this.show(this._children[this.previousElm]);
+  //   this.show(this._children[this._currentElm]);
 
   //   clearTimeout(this.delayHideSetTimeOutControl);
 
-  //   this.delayHideSetTimeOutControl = this.delayHide(this.children[this.previousElm], 1100);
-  //   this.children[this.currentElm]['classList']("active", "backward");
-  //   if (this.autoPlay) {
-  //     this.auto(this.intervalTime);
+  //   this.delayHideSetTimeOutControl = this.delayHide(this._children[this.previousElm], 1100);
+  //   this._children[this._currentElm]['classList']("active", "backward");
+  //   if (this._autoPlay) {
+  //     this._auto(this.intervalTime);
   //   };
   //   this.hide();
   // }
 
-  
-  forward(index: number) {
-    if (index == this.currentElm) {
-      return;
-    }
-
-    this._forward(index);
-
-    if(this.autoPlay) {
-      clearInterval(this.interval);
-      this.auto(this.intervalTime);        
-    }
-  }
-
   private _forward(elm?: number) {
-    this.removeClasses();
-    this.children[this.currentElm]['classList'].add("animateBack");
+    this._removeClasses();
+    this._children[this._currentElm]['classList'].add("animateBack");
     if (typeof(elm) != 'undefined') {
-      this.currentElm = elm;
+      this._currentElm = elm;
     }
-    else if ( (this.numberOfElm - 1) > this.currentElm) {
-      this.currentElm += 1;
+    else if ( (this._numberOfElm - 1) > this._currentElm) {
+      this._currentElm += 1;
     }
-    else if ( (this.numberOfElm - 1) == this.currentElm) {
-      this.currentElm = 0;
+    else if ( (this._numberOfElm - 1) == this._currentElm) {
+      this._currentElm = 0;
     }
 
-    this.changeRadio(this.currentElm);
-    this.children[this.currentElm]['classList'].add("active", "forward");
+    this._changeRadio(this._currentElm);
+    this._children[this._currentElm]['classList'].add("active", "forward");
   }
   
-  removeClasses() {
-    Array.prototype.forEach.call( this.children, (child: ElementRef) => {
+  private _removeClasses() {
+    Array.prototype.forEach.call( this._children, (child: ElementRef) => {
       child['classList'].remove('active', 'backward', 'forward', 'animateBack', 'animateForward');
     })
   }
 
-  auto(ms: number, index?: number) {
-    this.interval = setInterval(this._forward.bind(this), ms);
+  private _auto(ms: number, index?: number) {
+    this._interval = setInterval(this._forward.bind(this), ms);
   }
 
-  changeRadio(index: number) {
+  private _changeRadio(index: number) {
     this._navRadios.forEach( (radio, i) => {
       if (i == index) {
         radio.nativeElement['classList'].add('active');
