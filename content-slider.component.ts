@@ -1,8 +1,10 @@
 // With some inspiration from http://www.ravinderpayal.com/Simple-and-Light-Weight-Image-or-Content-Slider-for-Angular2/
 
-import { Component, Input, Output, ViewEncapsulation,
-         ViewChildren, ContentChild, ElementRef, QueryList
-} from '@angular/core';
+import { Component, Input,
+         Output, ViewEncapsulation,
+         HostListener, ContentChildren,
+         ViewChildren, ContentChild, 
+         ElementRef, QueryList }         from '@angular/core';
 
 
 @Component({
@@ -22,6 +24,11 @@ export class ContentSliderComponent {
       this.auto(this.intervalTime);
     }
   }
+  @Input('slideTo') set _slideTo(n: number) {
+    if ( (typeof(n) === "number") && (n != this.currentElm) ) {
+      this.forward(n);
+    }
+  }
 
   @ContentChild('slideShow') set _slideShow(s: ElementRef) {
     this.children = s.nativeElement.children;
@@ -31,7 +38,7 @@ export class ContentSliderComponent {
     }
   }
 
-  @ViewChildren('navRadio') private _navRadios: QueryList<any>
+  @ContentChildren('navRadios') private _navRadios: QueryList<any>;
 
   children: Array<ElementRef>;
   numberOfElm: number = 0;
