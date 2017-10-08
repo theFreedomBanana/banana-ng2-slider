@@ -8,9 +8,9 @@ import { Component, Input,
 
 
 @Component({
-  selector: 'content-slider',
-  templateUrl: './content-slider.component.html',
-  styleUrls: ['./content-slider.component.sass'],
+  selector: 'banana-slider',
+  templateUrl: './banana-slider.component.html',
+  styleUrls: ['./banana-slider.component.sass'],
   encapsulation: ViewEncapsulation.None
 })
 
