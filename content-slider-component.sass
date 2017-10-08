@@ -1,0 +1,114 @@
+@import '../../../assets/style/vars.sass'
+
+/*---------------------------Image Slider--------------------------*/
+
+@keyframes slideShow0
+  0%
+    translate: -1000px
+    visibility: hidden
+    opacity: 0
+  100%
+    translate: 0px
+    visibility: visible
+    opacity: 1
+  
+@keyframes slideShow1
+  0%
+   translate: 1000px
+   visibility: hidden
+   opacity: 0
+  100%
+    translate: 0px
+    visibility: visible
+    opacity: 1
+  
+@keyframes slideShow2
+  0%
+    display: flex        
+    transform: translate(0px)
+    visibility: visible
+    opacity: 1
+  40%
+    opacity: 0.4
+  70%
+    opacity: 0
+  100%
+    transform: translate(-1000px)
+    visibility: hidden
+    opacity: 0
+    display: none
+
+@keyframes slideShow3
+  0%
+    display: flex       
+    transform: translate(0px)
+    visibility: visible
+    opacity: 1  
+  100
+    transform: translate(1000px)
+    visibility: hidden
+    opacity: 0
+    display: none
+    display: none
+
+
+.slider
+  color: #000
+  z-index: 0
+  // background: #fff
+  background: transparent
+  position: relative
+
+  > ul
+    display: flex
+    padding: 0
+    justify-content: center
+    margin: 0
+
+    > li
+      list-style: none
+      width: 100%
+      display: none
+      transition: cubic-bezier(0.6, -0.61, 0, 1.34) all 0.7s
+
+    > li.active
+      display: flex
+      // display: inline-block
+
+    > li.backward
+      animation: slideShow0 1.2s cubic-bezier(0.6, -0.61, 0, 1.34)
+
+    > li.forward
+      animation: slideShow1 0.4s ease-in
+      z-index: 1
+
+    > li.animateBack
+      // display: inline-block
+      display: flex
+      position: absolute
+      animation: slideShow2 0.4s ease-in forwards
+      animation-delay: 0.2s
+
+    > li.animateForward
+      // display: inline-block
+      display: flex
+      position: absolute
+      animation: slideShow3 1s cubic-bezier(0.38,-0.74, 0, 1.29)  forwards
+      animation-delay: 0.1s
+
+  .slider-nav
+    margin-top: 1.5em
+
+    span.nav-radio
+      width: 0.7em
+      height: 0.7em
+      border: 1px $horsecom-red solid
+      margin-right: 1.4em
+      display: inline-flex
+      border-radius: 50%
+      cursor: pointer
+
+      &.active
+        background-color: $horsecom-red 
+
+/*---------------------------Image Slider Ends----------------------------*/

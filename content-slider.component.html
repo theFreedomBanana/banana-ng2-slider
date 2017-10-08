@@ -1,0 +1,13 @@
+<div class="slider">
+	
+	<ng-content></ng-content>
+
+	<div class="slider-nav col-lg-3 offset-lg-6">
+		<span #navRadio class="nav-radio" *ngFor="let child of children; let i = 'index'"
+					(click)="forward(i)"
+					[ngClass]="{'active': i == 0 ? true: false}">
+		</span>
+	</div>
+
+</div>
+
